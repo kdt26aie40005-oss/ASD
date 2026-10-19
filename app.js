@@ -1,7 +1,11 @@
 // テーブル番号（URL の ?table=5 のように指定できる。なければ 12）
 const TABLE_NO = new URLSearchParams(location.search).get("table") || "12";
 
+// アレルギー表示の対象（特定原材料8品目）。表示はこの順番で並べる
+const ALLERGENS = ["えび", "かに", "くるみ", "小麦", "そば", "卵", "乳", "落花生"];
+
 // オプションの種類（最初の選択肢が初期値）
+// 選択肢の allergens は、その選択肢を選んだときに加わるアレルギー
 const OPTION_GROUPS = {
   rice: {
     label: "ライス",
@@ -16,14 +20,14 @@ const OPTION_GROUPS = {
     choices: [
       { label: "デミグラス", price: 0 },
       { label: "和風おろし", price: 0 },
-      { label: "チーズ", price: 100 },
+      { label: "チーズ", price: 100, allergens: ["乳"] },
     ],
   },
   drinkbar: {
     label: "ドリンクバー",
     choices: [
       { label: "なし", price: 0 },
-      { label: "セットにする", price: 250 },
+      { label: "セットにする", price: 250, allergens: ["乳"] },
     ],
   },
   size: {
@@ -35,27 +39,53 @@ const OPTION_GROUPS = {
   },
 };
 
-// メニューのデータ（店名・メニュー・価格はすべて架空）
+// メニューのデータ（店名・メニュー・価格・アレルギー情報はすべて架空）
 const MENU = [
-  { id: 1, category: "ハンバーグ", emoji: "🍖", name: "ハンバーグステーキ", price: 790, desc: "ふっくら焼き上げた定番ハンバーグ。", options: ["sauce", "rice", "drinkbar"] },
-  { id: 2, category: "ハンバーグ", emoji: "🧀", name: "チーズインハンバーグ", price: 890, desc: "中からとろけるチーズがあふれます。", options: ["rice", "drinkbar"] },
-  { id: 3, category: "ハンバーグ", emoji: "🍳", name: "目玉焼きハンバーグ", price: 850, desc: "半熟の目玉焼きをのせました。", options: ["sauce", "rice", "drinkbar"] },
-  { id: 4, category: "定食・ごはん", emoji: "🍗", name: "からあげ定食", price: 820, desc: "外はカリッと、中はジューシー。", options: ["rice", "drinkbar"] },
-  { id: 5, category: "定食・ごはん", emoji: "🍛", name: "ビーフカレー", price: 750, desc: "じっくり煮込んだ自家製カレー。", options: ["size", "drinkbar"] },
-  { id: 6, category: "定食・ごはん", emoji: "🍳", name: "オムライス", price: 780, desc: "ふわとろ卵のオムライス。", options: ["size", "drinkbar"] },
-  { id: 7, category: "パスタ・ピザ", emoji: "🍝", name: "ミートソーススパゲティ", price: 690, desc: "トマトの酸味が効いたソース。", options: ["size", "drinkbar"] },
-  { id: 8, category: "パスタ・ピザ", emoji: "🍕", name: "マルゲリータピザ", price: 590, desc: "トマト・モッツァレラ・バジル。", options: ["drinkbar"] },
-  { id: 9, category: "サイド", emoji: "🍟", name: "山盛りポテトフライ", price: 390, desc: "みんなでシェアできるボリューム。", options: [] },
-  { id: 10, category: "サイド", emoji: "🥗", name: "シーザーサラダ", price: 420, desc: "シャキシャキのロメインレタス。", options: [] },
-  { id: 11, category: "サイド", emoji: "🥣", name: "コーンスープ", price: 250, desc: "やさしい甘さのポタージュ。", options: [] },
-  { id: 12, category: "ドリンク", emoji: "🥤", name: "ドリンクバー（単品）", price: 380, desc: "ソフトドリンク・コーヒー・紅茶が飲み放題。", options: [] },
-  { id: 13, category: "ドリンク", emoji: "🍺", name: "生ビール", price: 490, desc: "キンキンに冷えた一杯。", options: ["size"] },
-  { id: 14, category: "デザート", emoji: "🍮", name: "なめらかプリン", price: 350, desc: "カラメルソースを添えて。", options: [] },
-  { id: 15, category: "デザート", emoji: "🍨", name: "チョコレートパフェ", price: 590, desc: "アイスとブラウニーたっぷり。", options: [] },
-  { id: 16, category: "デザート", emoji: "🍰", name: "いちごのショートケーキ", price: 420, desc: "ふんわりスポンジと生クリーム。", options: [] },
+  { id: 1, category: "ハンバーグ", emoji: "🍖", name: "ハンバーグステーキ", price: 790, desc: "ふっくら焼き上げた定番ハンバーグ。", options: ["sauce", "rice", "drinkbar"], allergens: ["小麦", "卵", "乳"] },
+  { id: 2, category: "ハンバーグ", emoji: "🧀", name: "チーズインハンバーグ", price: 890, desc: "中からとろけるチーズがあふれます。", options: ["rice", "drinkbar"], allergens: ["小麦", "卵", "乳"] },
+  { id: 3, category: "ハンバーグ", emoji: "🍳", name: "目玉焼きハンバーグ", price: 850, desc: "半熟の目玉焼きをのせました。", options: ["sauce", "rice", "drinkbar"], allergens: ["小麦", "卵", "乳"] },
+  { id: 4, category: "定食・ごはん", emoji: "🍗", name: "からあげ定食", price: 820, desc: "外はカリッと、中はジューシー。", options: ["rice", "drinkbar"], allergens: ["小麦", "卵"] },
+  { id: 5, category: "定食・ごはん", emoji: "🍛", name: "ビーフカレー", price: 750, desc: "じっくり煮込んだ自家製カレー。", options: ["size", "drinkbar"], allergens: ["小麦", "乳"] },
+  { id: 6, category: "定食・ごはん", emoji: "🍳", name: "オムライス", price: 780, desc: "ふわとろ卵のオムライス。", options: ["size", "drinkbar"], allergens: ["小麦", "卵", "乳"] },
+  { id: 7, category: "パスタ・ピザ", emoji: "🍝", name: "ミートソーススパゲティ", price: 690, desc: "トマトの酸味が効いたソース。", options: ["size", "drinkbar"], allergens: ["小麦", "乳"] },
+  { id: 8, category: "パスタ・ピザ", emoji: "🍕", name: "マルゲリータピザ", price: 590, desc: "トマト・モッツァレラ・バジル。", options: ["drinkbar"], allergens: ["小麦", "乳"] },
+  { id: 9, category: "サイド", emoji: "🍟", name: "山盛りポテトフライ", price: 390, desc: "みんなでシェアできるボリューム。", options: [], allergens: [] },
+  { id: 10, category: "サイド", emoji: "🥗", name: "シーザーサラダ", price: 420, desc: "シャキシャキのロメインレタス。", options: [], allergens: ["小麦", "卵", "乳"] },
+  { id: 11, category: "サイド", emoji: "🥣", name: "コーンスープ", price: 250, desc: "やさしい甘さのポタージュ。", options: [], allergens: ["小麦", "乳"] },
+  { id: 12, category: "ドリンク", emoji: "🥤", name: "ドリンクバー（単品）", price: 380, desc: "ソフトドリンク・コーヒー・紅茶が飲み放題。", options: [], allergens: ["乳"] },
+  { id: 13, category: "ドリンク", emoji: "🍺", name: "生ビール", price: 490, desc: "キンキンに冷えた一杯。", options: ["size"], allergens: [] },
+  { id: 14, category: "デザート", emoji: "🍮", name: "なめらかプリン", price: 350, desc: "カラメルソースを添えて。", options: [], allergens: ["卵", "乳"] },
+  { id: 15, category: "デザート", emoji: "🍨", name: "チョコレートパフェ", price: 590, desc: "アイスとブラウニーたっぷり。", options: [], allergens: ["くるみ", "小麦", "卵", "乳"] },
+  { id: 16, category: "デザート", emoji: "🍰", name: "いちごのショートケーキ", price: 420, desc: "ふんわりスポンジと生クリーム。", options: [], allergens: ["小麦", "卵", "乳"] },
 ];
 
-const CATEGORIES = [...new Set(MENU.map((item) => item.category))];
+// 本日のおすすめ：日付をもとにランダムで3品選ぶ（同じ日なら何度開いても同じ3品）
+const RECOMMEND = "本日のおすすめ";
+const RECOMMEND_COUNT = 3;
+
+function pickRecommends() {
+  const today = new Date();
+  let seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+  // 日付から決まる乱数（同じ seed なら同じ順番で数が出る）
+  function random() {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+  // ドリンクはおすすめに入れない
+  const items = MENU.filter((item) => item.category !== "ドリンク");
+  // シャッフルして先頭の3品を使う
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  return items.slice(0, RECOMMEND_COUNT);
+}
+
+const RECOMMENDS = pickRecommends();
+
+const CATEGORIES = [RECOMMEND, ...new Set(MENU.map((item) => item.category))];
 
 const CART_KEY = "asd-cart-v2";
 const ORDERS_KEY = "asd-orders-v2";
@@ -120,6 +150,38 @@ function optionText(item, choices) {
     .join(" / ");
 }
 
+// 商品のアレルギー（選んだオプションの分も足して、ALLERGENS の順に並べる）
+function allergensOf(item, choices = {}) {
+  const set = new Set(item.allergens);
+  for (const key of item.options) {
+    const choice = OPTION_GROUPS[key].choices[choices[key] ?? 0];
+    for (const a of choice.allergens || []) set.add(a);
+  }
+  return ALLERGENS.filter((a) => set.has(a));
+}
+
+// アレルギーを表示する（なければ「特定原材料なし」）
+function showAllergens(box, list) {
+  box.innerHTML = "";
+  if (list.length === 0) {
+    box.textContent = "特定原材料なし";
+    return;
+  }
+  for (const a of list) {
+    const tag = document.createElement("span");
+    tag.className = "allergen";
+    tag.textContent = a;
+    box.appendChild(tag);
+  }
+}
+
+// 1回の注文でかごに入れられる合計個数
+const MAX_ITEMS = 20;
+
+function cartCount() {
+  return cart.reduce((sum, line) => sum + line.qty, 0);
+}
+
 function cartTotal() {
   return cart.reduce((sum, line) => sum + unitPrice(findMenu(line.id), line.choices) * line.qty, 0);
 }
@@ -146,7 +208,11 @@ function renderMenu() {
   document.getElementById("menu-title").textContent = currentCategory;
   const list = document.getElementById("menu-list");
   list.innerHTML = "";
-  for (const item of MENU.filter((m) => m.category === currentCategory)) {
+  const items = currentCategory === RECOMMEND
+    ? RECOMMENDS
+    : MENU.filter((m) => m.category === currentCategory);
+
+  for (const item of items) {
     const card = document.createElement("button");
     card.className = "menu-item";
     card.innerHTML = `
@@ -154,8 +220,17 @@ function renderMenu() {
       <div class="menu-body">
         <div class="menu-name"></div>
         <div class="price"></div>
+        <div class="allergens"></div>
       </div>
     `;
+    showAllergens(card.querySelector(".allergens"), allergensOf(item));
+    // おすすめの商品には印を付ける
+    if (RECOMMENDS.includes(item)) {
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = "本日のおすすめ";
+      card.appendChild(badge);
+    }
     showMenuImage(card.querySelector(".menu-image"), item);
     card.querySelector(".menu-name").textContent = item.name;
     card.querySelector(".price").textContent = yen(item.price);
@@ -191,9 +266,11 @@ function renderCart() {
     const [minus, plus] = row.querySelectorAll(".qty-button");
     minus.addEventListener("click", () => changeQty(index, -1));
     plus.addEventListener("click", () => changeQty(index, 1));
+    plus.disabled = cartCount() >= MAX_ITEMS;
     list.appendChild(row);
   });
 
+  document.getElementById("cart-count").textContent = `${cartCount()} / ${MAX_ITEMS}個`;
   document.getElementById("cart-empty").hidden = cart.length > 0;
   document.getElementById("cart-total").textContent = yen(cartTotal());
   document.getElementById("order-button").disabled = cart.length === 0;
@@ -201,6 +278,10 @@ function renderCart() {
 
 // かごの中の個数を増減する（0 になったら消す）
 function changeQty(index, diff) {
+  if (diff > 0 && cartCount() + diff > MAX_ITEMS) {
+    showToast(`1回のご注文は合計${MAX_ITEMS}個までです`);
+    return;
+  }
   cart[index].qty += diff;
   if (cart[index].qty <= 0) {
     cart.splice(index, 1);
@@ -262,10 +343,35 @@ function openDetail(item) {
   detailModal.showModal();
 }
 
+// かごにあと何個入れられるか
+function remainingCount() {
+  return MAX_ITEMS - cartCount();
+}
+
 function updateDetailPrice() {
+  const remaining = remainingCount();
+  const addButton = document.getElementById("detail-add");
+  const limit = document.getElementById("detail-limit");
+
   document.getElementById("detail-qty").textContent = detailQty;
+  showAllergens(document.getElementById("detail-allergens"), allergensOf(detailItem, detailChoices));
+
+  if (remaining <= 0) {
+    // かごがいっぱいのときは入れられない
+    addButton.disabled = true;
+    addButton.textContent = "かごに入れる";
+    document.getElementById("detail-plus").disabled = true;
+    limit.textContent = `かごがいっぱいです（1回のご注文は合計${MAX_ITEMS}個まで）`;
+    limit.hidden = false;
+    return;
+  }
+
   const total = unitPrice(detailItem, detailChoices) * detailQty;
-  document.getElementById("detail-add").textContent = `かごに入れる（${yen(total)}）`;
+  addButton.disabled = false;
+  addButton.textContent = `かごに入れる（${yen(total)}）`;
+  document.getElementById("detail-plus").disabled = detailQty >= remaining;
+  limit.textContent = `1回のご注文は合計${MAX_ITEMS}個までです（あと${remaining}個）`;
+  limit.hidden = detailQty < remaining;
 }
 
 document.getElementById("detail-minus").addEventListener("click", () => {
@@ -274,11 +380,12 @@ document.getElementById("detail-minus").addEventListener("click", () => {
 });
 
 document.getElementById("detail-plus").addEventListener("click", () => {
-  if (detailQty < 20) detailQty++;
+  if (detailQty < remainingCount()) detailQty++;
   updateDetailPrice();
 });
 
 document.getElementById("detail-add").addEventListener("click", () => {
+  if (detailQty > remainingCount()) return;
   // 同じ商品・同じオプションなら個数をまとめる
   const same = cart.find(
     (line) => line.id === detailItem.id && JSON.stringify(line.choices) === JSON.stringify(detailChoices)

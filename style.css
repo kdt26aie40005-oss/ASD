@@ -137,6 +137,24 @@ button {
   transition: transform 0.1s;
 }
 
+.menu-item {
+  position: relative;
+}
+
+/* 本日のおすすめの印 */
+.badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--accent);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
 .menu-item:active {
   transform: scale(0.98);
 }
@@ -173,6 +191,52 @@ button {
   font-weight: bold;
   font-size: 1.1rem;
   margin-top: 4px;
+}
+
+/* アレルギー */
+.allergens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.allergen {
+  border: 1px solid #d9a441;
+  background: #fff6e0;
+  color: #7a5200;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.75rem;
+}
+
+.allergen-box {
+  background: #faf7f2;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+
+.allergen-title {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.allergen-box .allergens {
+  font-size: 0.9rem;
+}
+
+.allergen-box .allergen {
+  font-size: 0.85rem;
+  padding: 2px 8px;
+}
+
+.allergen-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
 }
 
 /* 注文かご */
@@ -227,6 +291,25 @@ button {
   border: 1px solid #ccc;
   border-radius: 50%;
   background: #fff;
+}
+
+.qty-button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.cart-count {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: normal;
+  margin-left: 6px;
+}
+
+.limit-note {
+  margin: -8px 0 12px;
+  color: var(--main);
+  font-size: 0.85rem;
+  font-weight: bold;
 }
 
 .qty {

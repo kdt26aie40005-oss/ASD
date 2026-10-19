@@ -31,7 +31,7 @@
 
     <!-- 右：注文かご -->
     <aside class="cart">
-      <h2>注文かご</h2>
+      <h2>注文かご <span class="cart-count" id="cart-count"></span></h2>
       <ul class="cart-list" id="cart-list"></ul>
       <p class="empty" id="cart-empty">メニューを選んでください</p>
       <div class="total-row">
@@ -47,6 +47,11 @@
     <div class="detail-image" id="detail-image"></div>
     <h2 id="detail-name"></h2>
     <p class="detail-desc" id="detail-desc"></p>
+    <div class="allergen-box">
+      <div class="allergen-title">アレルギー（特定原材料8品目）</div>
+      <div class="allergens" id="detail-allergens"></div>
+      <p class="allergen-note">選んだオプションの分も含めて表示しています。くわしくは店員におたずねください。</p>
+    </div>
     <div id="detail-options"></div>
     <div class="qty-row">
       <span>個数</span>
@@ -54,6 +59,7 @@
       <span class="qty" id="detail-qty">1</span>
       <button class="qty-button" id="detail-plus" aria-label="増やす">＋</button>
     </div>
+    <p class="limit-note" id="detail-limit" hidden></p>
     <div class="modal-buttons">
       <button class="secondary-button" data-close>戻る</button>
       <button class="primary-button" id="detail-add">かごに入れる（¥0）</button>
