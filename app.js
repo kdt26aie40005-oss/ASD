@@ -57,6 +57,10 @@ const MENU = [
   { id: 14, category: "デザート", emoji: "🍮", name: "なめらかプリン", price: 350, desc: "カラメルソースを添えて。", options: [], allergens: ["卵", "乳"] },
   { id: 15, category: "デザート", emoji: "🍨", name: "チョコレートパフェ", price: 590, desc: "アイスとブラウニーたっぷり。", options: [], allergens: ["くるみ", "小麦", "卵", "乳"] },
   { id: 16, category: "デザート", emoji: "🍰", name: "いちごのショートケーキ", price: 420, desc: "ふんわりスポンジと生クリーム。", options: [], allergens: ["小麦", "卵", "乳"] },
+  { id: 17, category: "パスタ・ピザ", emoji: "🍝", name: "カルボナーラ", price: 790, desc: "卵とチーズの濃厚クリームソース。", image: "images/17.png", options: ["size", "drinkbar"], allergens: ["小麦", "卵", "乳"] },
+  { id: 18, category: "定食・ごはん", emoji: "🍤", name: "エビフライ定食", price: 980, desc: "ぷりぷりの大きなエビフライ2本。", image: "images/18.png", options: ["rice", "drinkbar"], allergens: ["えび", "小麦", "卵"] },
+  { id: 19, category: "ドリンク", emoji: "🍈", name: "メロンソーダフロート", price: 290, desc: "シュワッと爽やかなメロンソーダにバニラアイスをのせて。", image: "images/19.png", options: ["size"], allergens: ["乳"] },
+  { id: 20, category: "デザート", emoji: "🍵", name: "抹茶アイス", price: 330, desc: "ほろ苦い抹茶のアイスクリーム。", image: "images/20.png", options: [], allergens: ["乳"] },
 ];
 
 // 本日のおすすめ：日付をもとにランダムで3品選ぶ（同じ日なら何度開いても同じ3品）
@@ -473,6 +477,86 @@ document.getElementById("history-button").addEventListener("click", () => {
   document.getElementById("history-empty").hidden = orders.length > 0;
   document.getElementById("history-total").textContent = yen(total);
   historyModal.showModal();
+});
+
+// ---------- おすすめ診断 ----------
+
+// 年齢ごとのおすすめ候補（メニューID）。お酒は20歳以上の候補にだけ入れる
+const AGE_GROUPS = [
+  { max: 12, label: "お子さま", ids: [1, 2, 6, 9, 14, 19] },
+  { max: 19, label: "10代", ids: [2, 4, 8, 15, 17] },
+  { max: 39, label: "20〜30代", ids: [3, 7, 10, 13, 17] },
+  { max: 59, label: "40〜50代", ids: [4, 5, 13, 18] },
+  { max: Infinity, label: "60代以上", ids: [1, 11, 14, 18, 20] },
+];
+
+// 性別ごとに、選ばれやすくする商品（候補の中にあれば2倍選ばれやすくなる）
+const GENDER_BOOST = {
+  male: [1, 2, 3, 4, 5, 17, 18],       // ボリュームのあるもの
+  female: [10, 11, 14, 15, 16, 19, 20], // 軽めのもの・甘いもの
+  none: [],
+};
+
+let adviceItem = null;
+
+// 候補の中から、重みを付けてランダムに1品選ぶ
+function pickAdvice(gender, age) {
+  const group = AGE_GROUPS.find((g) => age <= g.max);
+  const boost = GENDER_BOOST[gender];
+  const weighted = [];
+  for (const id of group.ids) {
+    const weight = boost.includes(id) ? 2 : 1;
+    for (let i = 0; i < weight; i++) weighted.push(id);
+  }
+  const id = weighted[Math.floor(Math.random() * weighted.length)];
+  return { item: findMenu(id), group };
+}
+
+function showAdviceForm() {
+  document.getElementById("advice-form").hidden = false;
+  document.getElementById("advice-result").hidden = true;
+  document.getElementById("advice-error").hidden = true;
+}
+
+document.getElementById("advice-button").addEventListener("click", () => {
+  showAdviceForm();
+  document.getElementById("advice-modal").showModal();
+});
+
+document.getElementById("advice-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const gender = document.querySelector('input[name="gender"]:checked').value;
+  const ageText = document.getElementById("advice-age").value;
+  const age = Number(ageText);
+  const error = document.getElementById("advice-error");
+
+  if (ageText === "" || !Number.isInteger(age) || age < 0 || age > 120) {
+    error.textContent = "年齢を0〜120の数字で入力してください";
+    error.hidden = false;
+    return;
+  }
+
+  const { item, group } = pickAdvice(gender, age);
+  adviceItem = item;
+
+  const genderLabel = { male: "男性の", female: "女性の", none: "" }[gender];
+  document.getElementById("advice-reason").textContent =
+    `${group.label}${genderLabel}お客様へのおすすめはこちら！`;
+  showMenuImage(document.getElementById("advice-image"), item);
+  document.getElementById("advice-name").textContent = item.name;
+  document.getElementById("advice-price").textContent = yen(item.price);
+  showAllergens(document.getElementById("advice-allergens"), allergensOf(item));
+
+  document.getElementById("advice-form").hidden = true;
+  document.getElementById("advice-result").hidden = false;
+});
+
+document.getElementById("advice-retry").addEventListener("click", showAdviceForm);
+
+// おすすめの商品の詳細を開く
+document.getElementById("advice-open").addEventListener("click", () => {
+  document.getElementById("advice-modal").close();
+  openDetail(adviceItem);
 });
 
 // ---------- 店員呼び出し ----------

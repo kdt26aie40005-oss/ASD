@@ -14,6 +14,7 @@
       <span class="table-no" id="table-no"></span>
     </div>
     <div class="header-right">
+      <button class="header-button" id="advice-button">おすすめ診断</button>
       <button class="header-button" id="history-button">注文履歴・お会計</button>
       <button class="header-button call" id="call-button">店員呼び出し</button>
     </div>
@@ -92,6 +93,47 @@
     <p class="note">お会計はレジでお願いいたします。</p>
     <div class="modal-buttons">
       <button class="secondary-button" data-close>閉じる</button>
+    </div>
+  </dialog>
+
+  <!-- おすすめ診断：性別と年齢からおすすめを1品出す -->
+  <dialog class="modal" id="advice-modal">
+    <h2>おすすめ診断</h2>
+
+    <!-- 入力 -->
+    <form id="advice-form">
+      <fieldset class="option-group">
+        <legend>性別</legend>
+        <div class="option-choices">
+          <label class="option-choice"><input type="radio" name="gender" value="male">男性</label>
+          <label class="option-choice"><input type="radio" name="gender" value="female">女性</label>
+          <label class="option-choice"><input type="radio" name="gender" value="none" checked>回答しない</label>
+        </div>
+      </fieldset>
+      <label class="age-label">
+        年齢
+        <input class="age-input" type="number" id="advice-age" min="0" max="120" inputmode="numeric" placeholder="例：25">
+        歳
+      </label>
+      <p class="limit-note" id="advice-error" hidden></p>
+      <p class="allergen-note">入力した内容は、おすすめを選ぶためだけに使い、保存しません。</p>
+      <div class="modal-buttons">
+        <button class="secondary-button" type="button" data-close>閉じる</button>
+        <button class="primary-button" type="submit">診断する</button>
+      </div>
+    </form>
+
+    <!-- 結果 -->
+    <div id="advice-result" hidden>
+      <p class="advice-reason" id="advice-reason"></p>
+      <div class="detail-image" id="advice-image"></div>
+      <h3 class="advice-name" id="advice-name"></h3>
+      <div class="price" id="advice-price"></div>
+      <div class="allergens" id="advice-allergens"></div>
+      <div class="modal-buttons">
+        <button class="secondary-button" id="advice-retry">もう一度</button>
+        <button class="primary-button" id="advice-open">この商品を見る</button>
+      </div>
     </div>
   </dialog>
 

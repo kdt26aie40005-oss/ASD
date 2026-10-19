@@ -462,6 +462,37 @@ button {
   color: #555;
 }
 
+/* おすすめ診断 */
+.age-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+}
+
+.age-input {
+  width: 6em;
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#advice-error {
+  margin: 8px 0 0;
+}
+
+.advice-reason {
+  margin: 0 0 12px;
+  font-weight: bold;
+  color: var(--main);
+}
+
+.advice-name {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
 /* お知らせ */
 .toast {
   position: fixed;
