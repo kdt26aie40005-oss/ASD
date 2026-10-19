@@ -1,0 +1,433 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --main: #c8102e;
+  --main-dark: #a00d24;
+  --accent: #ffcc00;
+  --bg: #f6f3ee;
+  --text: #2b2b2b;
+  --muted: #888;
+  --line: #e6e1d9;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ヘッダー */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--main);
+  color: #fff;
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.table-no {
+  background: #fff;
+  color: var(--main);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-weight: bold;
+}
+
+.header-right {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.header-button {
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: bold;
+}
+
+.header-button.call {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* 全体のレイアウト：カテゴリ | メニュー | 注文かご */
+.layout {
+  display: grid;
+  grid-template-columns: 160px 1fr 320px;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* カテゴリ（縦並び） */
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-self: start;
+  position: sticky;
+  top: 80px;
+}
+
+.category {
+  border: none;
+  background: #fff;
+  border-radius: 8px;
+  padding: 14px 12px;
+  text-align: left;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.category.active {
+  background: var(--main);
+  color: #fff;
+}
+
+/* メニュー */
+.menu-title {
+  margin: 0 0 12px;
+  font-size: 1.3rem;
+}
+
+.menu-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.menu-item {
+  border: none;
+  background: #fff;
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.1s;
+}
+
+.menu-item:active {
+  transform: scale(0.98);
+}
+
+/* 写真の代わりに絵文字を大きく表示 */
+.menu-image,
+.detail-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  background: #fbe9d7;
+  font-size: 4rem;
+  overflow: hidden;
+}
+
+.menu-image img,
+.detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu-body {
+  padding: 12px;
+}
+
+.menu-name {
+  font-weight: bold;
+}
+
+.price {
+  color: var(--main);
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 4px;
+}
+
+/* 注文かご */
+.cart {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  align-self: start;
+  position: sticky;
+  top: 80px;
+}
+
+.cart h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.cart-list,
+.summary-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cart-row {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-row-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.option-text {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.cart-row-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.qty-button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.qty {
+  min-width: 1.5em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin: 14px 0;
+}
+
+.total-row.big {
+  font-size: 1.4rem;
+  color: var(--main);
+}
+
+.primary-button,
+.secondary-button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.primary-button {
+  background: var(--main);
+  color: #fff;
+}
+
+.primary-button:hover {
+  background: var(--main-dark);
+}
+
+.primary-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  background: #eee;
+  color: var(--text);
+}
+
+.cart .primary-button {
+  width: 100%;
+}
+
+/* モーダル */
+.modal {
+  border: none;
+  border-radius: 12px;
+  padding: 24px;
+  width: min(480px, calc(100% - 32px));
+  max-height: calc(100% - 32px);
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal h2 {
+  margin: 0 0 12px;
+}
+
+.detail-image {
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 5rem;
+}
+
+.detail-desc {
+  color: #555;
+  margin-top: 0;
+}
+
+.option-group {
+  border: none;
+  margin: 0 0 14px;
+  padding: 0;
+}
+
+.option-group legend {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.option-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.option-choice {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.option-choice:has(input:checked) {
+  border-color: var(--main);
+  background: #fdeced;
+}
+
+.qty-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+  font-weight: bold;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.summary-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.history-time {
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+.note {
+  color: #555;
+}
+
+/* お知らせ */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  background: #2d6a27;
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 20;
+}
+
+/* 画面が狭いとき：注文かごを下に回す */
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 140px 1fr;
+  }
+
+  .cart {
+    grid-column: 1 / -1;
+    position: static;
+  }
+}
+
+/* さらに狭いとき（スマホ）：カテゴリを横並びにする */
+@media (max-width: 600px) {
+  .header {
+    padding: 12px 16px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .categories {
+    flex-direction: row;
+    overflow-x: auto;
+    position: static;
+  }
+
+  .category {
+    white-space: nowrap;
+  }
+
+  .menu-list {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}

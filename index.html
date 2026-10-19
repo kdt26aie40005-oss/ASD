@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASDダイニング オーダー</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ヘッダー：店名・テーブル番号・各種ボタン -->
+  <header class="header">
+    <div class="header-left">
+      <h1>ASDダイニング</h1>
+      <span class="table-no" id="table-no"></span>
+    </div>
+    <div class="header-right">
+      <button class="header-button" id="history-button">注文履歴・お会計</button>
+      <button class="header-button call" id="call-button">店員呼び出し</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- 左：カテゴリ -->
+    <nav class="categories" id="categories"></nav>
+
+    <!-- 中央：メニュー -->
+    <section class="menu">
+      <h2 class="menu-title" id="menu-title"></h2>
+      <div class="menu-list" id="menu-list"></div>
+    </section>
+
+    <!-- 右：注文かご -->
+    <aside class="cart">
+      <h2>注文かご</h2>
+      <ul class="cart-list" id="cart-list"></ul>
+      <p class="empty" id="cart-empty">メニューを選んでください</p>
+      <div class="total-row">
+        <span>合計</span>
+        <span id="cart-total">¥0</span>
+      </div>
+      <button class="primary-button" id="order-button" disabled>注文に進む</button>
+    </aside>
+  </main>
+
+  <!-- 商品の詳細（オプション・個数を選ぶ） -->
+  <dialog class="modal" id="detail-modal">
+    <div class="detail-image" id="detail-image"></div>
+    <h2 id="detail-name"></h2>
+    <p class="detail-desc" id="detail-desc"></p>
+    <div id="detail-options"></div>
+    <div class="qty-row">
+      <span>個数</span>
+      <button class="qty-button" id="detail-minus" aria-label="減らす">−</button>
+      <span class="qty" id="detail-qty">1</span>
+      <button class="qty-button" id="detail-plus" aria-label="増やす">＋</button>
+    </div>
+    <div class="modal-buttons">
+      <button class="secondary-button" data-close>戻る</button>
+      <button class="primary-button" id="detail-add">かごに入れる（¥0）</button>
+    </div>
+  </dialog>
+
+  <!-- 注文前の確認 -->
+  <dialog class="modal" id="confirm-modal">
+    <h2>この内容で注文しますか？</h2>
+    <ul class="summary-list" id="confirm-list"></ul>
+    <div class="total-row">
+      <span>合計</span>
+      <span id="confirm-total">¥0</span>
+    </div>
+    <div class="modal-buttons">
+      <button class="secondary-button" data-close>戻る</button>
+      <button class="primary-button" id="confirm-button">注文する</button>
+    </div>
+  </dialog>
+
+  <!-- 注文履歴・お会計 -->
+  <dialog class="modal" id="history-modal">
+    <h2>注文履歴</h2>
+    <ul class="summary-list" id="history-list"></ul>
+    <p class="empty" id="history-empty">まだ注文はありません</p>
+    <div class="total-row big">
+      <span>お会計金額</span>
+      <span id="history-total">¥0</span>
+    </div>
+    <p class="note">お会計はレジでお願いいたします。</p>
+    <div class="modal-buttons">
+      <button class="secondary-button" data-close>閉じる</button>
+    </div>
+  </dialog>
+
+  <!-- 店員呼び出し -->
+  <dialog class="modal" id="call-modal">
+    <h2>店員を呼んでいます</h2>
+    <p class="note">少々お待ちください。</p>
+    <div class="modal-buttons">
+      <button class="secondary-button" data-close>呼び出しを取り消す</button>
+    </div>
+  </dialog>
+
+  <!-- 注文完了などのお知らせ -->
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

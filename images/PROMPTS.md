@@ -1,0 +1,31 @@
+# メニュー画像の生成用プロンプト
+
+各プロンプトを画像生成ツール（ChatGPT、Bing Image Creator、Adobe Firefly など）に入れて画像を作り、
+「ファイル名」の名前でこの `images` フォルダに保存してください。
+
+- 形式は JPG（`.jpg`）。横長（4:3）がきれいに収まります。
+- PNG などで保存した場合は、`app.js` の `MENU` のその商品に `image: "images/1.png"` のように書き足してください。
+- 画像がない商品は、絵文字が表示されます。
+
+すべてのプロンプトの最後には、雰囲気をそろえるための共通の文が入っています。
+
+> Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo
+
+| ファイル名 | メニュー | プロンプト |
+|---|---|---|
+| `1.jpg` | ハンバーグステーキ | A juicy Japanese-style hamburg steak with demi-glace sauce, served with corn, broccoli and fries on a hot iron plate. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `2.jpg` | チーズインハンバーグ | A cheese-filled hamburg steak cut open with melted cheese flowing out, demi-glace sauce, side vegetables on a hot iron plate. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `3.jpg` | 目玉焼きハンバーグ | A hamburg steak topped with a sunny-side-up fried egg with a runny yolk, demi-glace sauce, side vegetables on a hot iron plate. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `4.jpg` | からあげ定食 | A Japanese karaage set meal: crispy fried chicken pieces with shredded cabbage and lemon, a bowl of rice, miso soup and pickles on a tray. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `5.jpg` | ビーフカレー | Japanese beef curry with tender beef chunks and rich brown curry sauce next to white rice, with fukujinzuke pickles. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `6.jpg` | オムライス | Japanese omurice with a fluffy soft omelette over ketchup chicken rice, topped with demi-glace sauce. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `7.jpg` | ミートソーススパゲティ | Spaghetti with rich tomato meat sauce, sprinkled with parmesan cheese and parsley. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `8.jpg` | マルゲリータピザ | A Margherita pizza with tomato sauce, melted mozzarella and fresh basil leaves, whole pizza viewed from slightly above. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `9.jpg` | 山盛りポテトフライ | A large heaping pile of golden french fries in a basket with ketchup on the side, sharing size. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `10.jpg` | シーザーサラダ | Caesar salad with crisp romaine lettuce, croutons, shaved parmesan and creamy dressing in a bowl. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `11.jpg` | コーンスープ | A cup of creamy Japanese corn potage soup garnished with parsley and a few corn kernels. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `12.jpg` | ドリンクバー（単品） | Several glasses of colorful soft drinks with ice — cola, orange juice, melon soda — and a cup of coffee, lined up together. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `13.jpg` | 生ビール | A frosty mug of draft beer with a thick creamy white head, condensation on the glass. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `14.jpg` | なめらかプリン | A smooth Japanese custard pudding (purin) with glossy caramel sauce, topped with whipped cream and a cherry. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `15.jpg` | チョコレートパフェ | A tall chocolate parfait in a glass with vanilla and chocolate ice cream, brownie pieces, whipped cream and chocolate sauce. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
+| `16.jpg` | いちごのショートケーキ | A slice of Japanese strawberry shortcake with fluffy sponge, fresh whipped cream and strawberries on top and in the layers. Professional food photography for a Japanese family restaurant menu, served on a white plate on a wooden table, soft natural lighting, appetizing, high detail, 4:3 aspect ratio, no text, no logo |
